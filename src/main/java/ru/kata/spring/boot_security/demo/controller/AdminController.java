@@ -13,6 +13,7 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -31,9 +32,12 @@ public class AdminController {
     }
 
     @GetMapping("")
-    public String createUserForm(ModelMap model, Principal principal) {
-        model.addAttribute("admin", principal);
+    public String index(ModelMap model, Principal principal) {
+        User admin = userService.findByEmail(principal.getName());
+        model.addAttribute("admin", admin);
         model.addAttribute("users", userService.findAll());
+        List<Role> roles = roleService.findAll();
+        model.addAttribute("roles", roles);
         return "admin";
     }
     @GetMapping("/user-create")
@@ -61,7 +65,7 @@ public class AdminController {
     @GetMapping("/user-update/{id}")
     public ModelAndView updateUserForm(@ModelAttribute("user") User user, @PathVariable("id") Long id) {
         User userToUpdate = userService.findById(id);
-        ModelAndView mav = new ModelAndView("user-update");
+        ModelAndView mav = new ModelAndView("admin");
         mav.addObject("user", userToUpdate);
         List<Role> roles = roleService.findAll();
         mav.addObject("roles", roles);
@@ -70,6 +74,7 @@ public class AdminController {
 
     @PutMapping("/user-update")
     public String updateUser(@ModelAttribute("user") User user) {
+        System.out.println("USER TO UPDATE " + user.toString());
         userService.updateUser(user);
         return "redirect:/admin";
     }

@@ -23,10 +23,6 @@ public class User implements UserDetails {
     @NotNull
     private Long id;
 
-    @Column(name = "username")
-    @NotNull
-    private String username;
-
     @Column(name = "name")
     @NotNull
     private String name;
@@ -35,9 +31,13 @@ public class User implements UserDetails {
     @NotNull
     private String lastName;
 
-    @Column(name = "favouriteColor")
+    @Column(name = "email")
     @NotNull
-    private String favouriteColor;
+    private String email;
+
+    @Column(name = "age")
+    @NotNull
+    private byte age;
 
     @Column(name = "password")
     private String password;
@@ -54,11 +54,11 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String username, String name, String lastName, String favouriteColor, String password, Set<Role> roles) {
-        this.username = username;
+    public User(String email, String name, String lastName, byte age, String password, Set<Role> roles) {
+        this.email = email;
         this.name = name;
         this.lastName = lastName;
-        this.favouriteColor = favouriteColor;
+        this.age = age;
         this.password = password;
         this.roles = roles;
     }
@@ -73,7 +73,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 
     public String getName() {
@@ -84,8 +84,12 @@ public class User implements UserDetails {
         return lastName;
     }
 
-    public String getFavouriteColor() {
-        return favouriteColor;
+    public String getEmail() {
+        return email;
+    }
+
+    public byte getAge() {
+        return age;
     }
 
     @Override
@@ -105,7 +109,7 @@ public class User implements UserDetails {
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.email = username;
     }
 
     public void setName(String name) {
@@ -116,8 +120,12 @@ public class User implements UserDetails {
         this.lastName = lastName;
     }
 
-    public void setFavouriteColor(String favouriteColor) {
-        this.favouriteColor = favouriteColor;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setAge(byte age) {
+        this.age = age;
     }
 
     public void setPassword(String password) {
@@ -158,10 +166,10 @@ public class User implements UserDetails {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", username='" + username + '\'' +
                 ", name='" + name + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", favouriteColor='" + favouriteColor + '\'' +
+                ", email='" + email + '\'' +
+                ", age=" + age +
                 ", password='" + password + '\'' +
                 ", roles=" + roles +
                 '}';

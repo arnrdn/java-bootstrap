@@ -37,10 +37,10 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public void saveUser(User user) {
-        User userDB = userRepository.findByUsername(user.getUsername());
+        User userDB = userRepository.findByEmail(user.getUsername());
 
         if (userDB == null) {
-            User userToSave = new User(user.getUsername(), user.getName(), user.getLastName(), user.getFavouriteColor(), passwordEncoder().encode(user.getPassword()), user.getRoles());
+            User userToSave = new User(user.getUsername(), user.getName(), user.getLastName(), user.getAge(), passwordEncoder().encode(user.getPassword()), user.getRoles());
             userRepository.save(userToSave);
         }
 
@@ -72,8 +72,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     private PasswordEncoder passwordEncoder() {
@@ -82,11 +82,11 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = findByUsername(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = findByEmail(email);
 
         if (user == null) {
-            throw new UsernameNotFoundException(String.format("User '%s' not found", username));
+            throw new UsernameNotFoundException(String.format("User with email '%s' not found", email));
         }
 
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));

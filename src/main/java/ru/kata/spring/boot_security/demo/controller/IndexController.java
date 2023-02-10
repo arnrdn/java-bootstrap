@@ -11,6 +11,6 @@ public class IndexController {
 
     @GetMapping(value = "")
     public String index() {
-        return "index";
+        return "redirect:/login";
     }
 }
